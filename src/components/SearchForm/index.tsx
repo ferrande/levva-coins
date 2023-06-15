@@ -15,6 +15,7 @@ export function SearchForm() {
         SearchUseCase.execute({search: text})
     }
 
+
     return (
         <SearchFormContainer>
             <input onChange={(e) => setText(e.target.value)} type="text" placeholder="Busque por transações"/>
