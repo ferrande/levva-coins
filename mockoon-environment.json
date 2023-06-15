@@ -4,7 +4,7 @@
   "name": "Mockoon environment",
   "endpointPrefix": "api",
   "latency": 750,
-  "port": 3333,
+  "port": 7277,
   "hostname": "",
   "folders": [
     {
@@ -53,6 +53,10 @@
         {
           "type": "route",
           "uuid": "0a64b146-5b8e-46fb-a344-6c6983dd3b00"
+        },
+        {
+          "type": "route",
+          "uuid": "ada253e9-9649-4032-b951-4aaae0f5db72"
         }
       ]
     }
@@ -63,7 +67,7 @@
       "type": "http",
       "documentation": "Create a user",
       "method": "post",
-      "endpoint": "user",
+      "endpoint": "User",
       "responses": [
         {
           "uuid": "e8820fe6-8daa-40b4-9473-1e275fd2908b",
@@ -183,7 +187,7 @@
       "type": "http",
       "documentation": "Update a user",
       "method": "put",
-      "endpoint": "user/:userId",
+      "endpoint": "User/:userId",
       "responses": [
         {
           "uuid": "abf3be7e-6937-41c6-af85-e750881b8120",
@@ -268,11 +272,11 @@
       "type": "http",
       "documentation": "Create category",
       "method": "post",
-      "endpoint": "category",
+      "endpoint": "Category",
       "responses": [
         {
           "uuid": "86536c61-5b65-41f8-bf97-bf560f2afd08",
-          "body": "{}",
+          "body": "{\n  \"id\": \"{{guid}}\",\n  \"description\": \"{{body 'description'}}\"\n}",
           "latency": 0,
           "statusCode": 201,
           "label": "Category created",
@@ -353,7 +357,7 @@
       "type": "http",
       "documentation": "List all categories",
       "method": "get",
-      "endpoint": "category",
+      "endpoint": "Category/list",
       "responses": [
         {
           "uuid": "45d966d4-cc39-42d3-bda5-f5f548e2aa87",
@@ -413,7 +417,7 @@
       "type": "http",
       "documentation": "Create transaction",
       "method": "post",
-      "endpoint": "transaction",
+      "endpoint": "Transaction",
       "responses": [
         {
           "uuid": "dace6f79-a2fc-4e10-bb2e-9e4f364b9960",
@@ -505,7 +509,7 @@
       "type": "http",
       "documentation": "List all transactions",
       "method": "get",
-      "endpoint": "transaction",
+      "endpoint": "Transaction/list",
       "responses": [
         {
           "uuid": "903c8f60-1a2f-405c-9c22-e2f2a469a65f",
@@ -547,6 +551,91 @@
               "target": "header",
               "modifier": "authorization",
               "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJqb2huLmRvZUBsZXZ2YS5pbyIsImlhdCI6MTUxNjIzOTAyMn0.QWUZppAlw8k0s0bTr-3SofAMv_HoGHKilTP_o6cxgsw",
+              "invert": true,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "ada253e9-9649-4032-b951-4aaae0f5db72",
+      "type": "http",
+      "documentation": "Search for transactions",
+      "method": "get",
+      "endpoint": "Transaction/:search",
+      "responses": [
+        {
+          "uuid": "df0ed373-b448-4e65-9b4f-46dc03f3506a",
+          "body": "[\r\n  {{#repeat 2 5}}\r\n  {\r\n    \"description\": \"{{faker 'commerce.productName'}}\",\r\n    \"amount\": {{toFixed (float 10 100) 2}},\r\n    \"type\": {{int 0 1}},\r\n    \"category\": { \r\n      \"id\": \"{{guid}}\",\r\n      \"description\": \"{{faker 'commerce.department'}}\"\r\n    },\r\n    \"createdAt\": \"{{now 'dd/MM/YYYY'}}\"\r\n  }\r\n  {{/repeat}}\r\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "List all searched transactions",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "12d18472-a387-4d3d-bbd7-8d82e06932fb",
+          "body": "{\r\n  \"hasError\": true,\r\n  \"message\": \"Usuário não autenticado.\"\r\n}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "User unauthorized",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "authorization",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "header",
+              "modifier": "authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJqb2huLmRvZUBsZXZ2YS5pbyIsImlhdCI6MTUxNjIzOTAyMn0.QWUZppAlw8k0s0bTr-3SofAMv_HoGHKilTP_o6cxgsw",
+              "invert": true,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "87ae1f37-219d-408c-8360-84b00b486c0a",
+          "body": "[]",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Transactions not found",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "search",
+              "value": "food",
               "invert": true,
               "operator": "equals"
             }
