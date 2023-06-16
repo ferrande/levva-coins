@@ -41,7 +41,6 @@ export function CategoryModal() {
     async function handleCreateCategory({ description }: FormProps) {
         NewCategoryUseCase.execute({ description })
             .then(() => closeModalRef.current?.click())
-            // chamar algo aqui?
             .finally(() => reset());
     }
 

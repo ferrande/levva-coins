@@ -4,7 +4,7 @@
   "name": "Mockoon environment",
   "endpointPrefix": "api",
   "latency": 750,
-  "port": 7277,
+  "port": 3333,
   "hostname": "",
   "folders": [
     {
