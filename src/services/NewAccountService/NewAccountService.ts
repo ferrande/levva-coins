@@ -12,7 +12,7 @@ const createUser = async ({
     confirmPassword,
 }: NewAccountParams): Promise<void> => {
     return Api.post({
-        url: "/User",
+        url: "/User/Create",
         body: {
             name,
             email,

@@ -11,9 +11,9 @@ const createTransaction = async ({
     amount,
     type,
     categoryId,
-}: NewTransactionParams): Promise<void> => {
+}: NewTransactionParams): Promise<TransactionValues> => {
     return Api.post({
-        url: "/Transaction",
+        url: "/Transaction/Create",
         body: {
             description,
             amount,
@@ -43,7 +43,12 @@ const getTransactions = async (): Promise<TransactionValues[]> => {
 
 const searchTransactions = async ({ search }: SearchParams): Promise<TransactionValues[]> => {
     return Api.get({
-        url: `/Transaction/${search}`,
+        url: `/Transaction/list?query=${search}`,
+        config: {
+            params: {
+                query: search,
+            },
+        },
     })
         .then((response) => {
             return response.data;

@@ -2,7 +2,7 @@ import { TransactionService } from "../../services/TransactionService/Transactio
 
 import { loadTransaction, loadCreateTransactionDone, loadTransactionFail } from "../../stores/TransactionStore/TransactionEvents";
 
-import { NewTransactionParams } from "../../domains/transaction";
+import { NewTransactionParams, TransactionValues } from "../../domains/transaction";
 import { RequestError } from "../../domains/request";
 
 const execute = async ({
@@ -19,8 +19,8 @@ const execute = async ({
         type,
         categoryId,
     })
-        .then(() => {
-            loadCreateTransactionDone();
+        .then(({ id, category, createdAt }: TransactionValues) => {
+            loadCreateTransactionDone({ id, description, amount, type, category, createdAt });
         })
         .catch(({ hasError, message }: RequestError) => {
             loadTransactionFail({ hasError, message });

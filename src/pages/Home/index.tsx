@@ -21,6 +21,12 @@ export function Home() {
         currency: "BRL",
     });
 
+    const date = new Intl.DateTimeFormat("pt-BR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+      
     useEffect(() => {
         GetTransactionsUseCase.execute();
     }, []);
@@ -50,7 +56,7 @@ export function Home() {
                             <PriceHighlight variant={transaction.type === 0 ? "income" : "outcome"}>{money.format(transaction.amount)}</PriceHighlight>
                         </td>
                         <td>{transaction.category.description}</td>
-                        <td>{transaction.createdAt}</td>
+                        <td>{date.format(new Date(transaction.createdAt))}</td>
                     </tr>
                     ))}
                 </tbody>

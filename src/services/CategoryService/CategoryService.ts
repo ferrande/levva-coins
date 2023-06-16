@@ -9,7 +9,7 @@ const createCategory = async ({
     description,
 }: NewCategoryParams): Promise<CategoryValues> => {
     return Api.post({
-        url: "/Category",
+        url: "/Category/Create",
         body: {
             description,
         },
